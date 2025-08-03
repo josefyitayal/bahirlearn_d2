@@ -1,0 +1,220 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @default(cuid())
+  clerk_id   String  @unique
+  first_name String?
+  last_name  String?
+  email     String  @unique
+  profile_picture  String?
+  telebirr_number String?
+  is_payed Boolean @default(false)
+
+  website Website?
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model Website {
+  id           String    @id @default(cuid())
+  name         String
+  description  String
+  subdomain    String    @unique
+  logo         String?
+  is_published  Boolean   @default(false)
+
+  owner        User      @relation(fields: [owner_id], references: [id])
+  owner_id      String    @unique
+
+  otp_code OtpCode[]
+  member      Member[]
+  social_media SocialMedia[]
+  course      Course[]
+  page    Page[]
+  transaction Transaction[]
+  theme Json
+
+  template Template @relation(fields: [template_id], references: [id])
+  template_id String
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model Page {
+  id         String   @id @default(cuid())
+  name       String   // name of the page
+  slug       String   // '/', '/about'
+  is_system Boolean 
+  
+  section   Json     // Array of section blocks
+  
+  website    Website  @relation(fields: [website_id], references: [id])
+  website_id  String
+  
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model Template {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  thumbnail   String
+  price Int
+
+  website Website[]
+  theme Json
+  page TemplatePage[]
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model TemplatePage {
+  id         String   @id @default(cuid())
+  name       String   // name of the page
+  slug       String   // '/', '/about'
+  is_system Boolean
+  
+  section   Json     // Array of section blocks
+  
+  template   Template @relation(fields: [template_id], references: [id])
+  template_id String
+  
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model SocialMedia {
+  id         String   @id @default(cuid())
+  platform   String
+  url        String
+  website    Website  @relation(fields: [website_id], references: [id])
+  website_id  String
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model Member {
+  id           String   @id @default(cuid())
+  first_name    String
+  last_name     String?
+  email        String
+  phone_number  String
+
+  website      Website  @relation(fields: [website_id], references: [id])
+  website_id    String
+  transaction Transaction[]
+  otp_code OtpCode[]
+  enrollment  CourseEnrollment[]
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  @@unique([email, website_id])
+  @@unique([phone_number, website_id])
+}
+
+model Course {
+  id           String    @id @default(cuid())
+  name        String
+  description  String?
+  thumbnail    String
+  slug String
+  price        Int
+  tag          String[]
+  status       COURSE_STATUS @default(DRAFT)
+
+  website      Website   @relation(fields: [website_id], references: [id])
+  website_id    String
+  transaction Transaction[]
+  lesson      Lesson[]
+  enrollment  CourseEnrollment[]
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+enum COURSE_STATUS {
+  DRAFT
+  PUBLISHED
+}
+
+model Lesson {
+  id         String   @id @default(cuid())
+  title      String
+  content    String // markdown or richtext
+  postion      Int
+  course     Course  @relation(fields: [course_id], references: [id])
+  course_id   String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model CourseEnrollment {
+  id         String   @id @default(cuid())
+  course     Course   @relation(fields: [course_id], references: [id])
+  course_id   String
+
+  member     Member   @relation(fields: [member_id], references: [id])
+  member_id   String
+
+  enrolled_at DateTime @default(now())
+  progress   Float    @default(0)
+  completed_at DateTime?
+
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  @@unique([course_id, member_id])
+}
+
+model Transaction {
+  id           String   @id @default(cuid())
+  member       Member   @relation(fields: [member_id], references: [id])
+  member_id     String
+  website      Website  @relation(fields: [website_id], references: [id])
+  website_id    String
+  course       Course   @relation(fields: [course_id], references: [id])
+  course_id     String
+  ref_number    String
+  amount       Float
+  verified     Boolean  @default(false)
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String @unique
+
+  website Website @relation(fields: [website_id], references: [id])
+  website_id String
+
+  member    Member? @relation(fields: [member_id], references: [id])
+  member_id  String? @unique
+  expires_at DateTime
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+}
