@@ -1,0 +1,288 @@
+[
+  {
+    "id": "hero-section",
+    "name": "Hero",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "headline": "Master Next.js from Scratch",
+      "subtext": "Build modern web apps like a pro.",
+      "cta_text": "Explore courses",
+      "image": "/placeholder.svg",
+      "image_position": "background"
+    }
+  },
+  {
+    "id": "about-instractor",
+    "name": "About Instructor",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "About Your Instructor",
+      "name": "Alex Morgan",
+      "title": "Senior Fullstack Developer",
+      "bio_text": "With over a decade of experience in the industry, Alex has a passion for teaching and building scalable web applications. He's excited to guide you on your learning journey.",
+      "image_url": "/placeholder.svg",
+      "social_links": {
+        "twitter": "#",
+        "linkedin": "",
+        "github": "#",
+        "instagram": "#",
+        "youtube": "#"
+      }
+    }
+  },
+  {
+    "id": "course-features",
+    "name": "Course Features",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "What You’ll Learn or Get",
+      "features": [
+        {
+          "title": "20+ Hours of Video Content",
+          "description": "Learn at your own pace with high-quality lessons and screen sharing."
+        },
+        {
+          "title": "Certificate of Completion",
+          "description": "Get a certificate you can share on LinkedIn and your resume."
+        },
+        {
+          "title": "Lifetime Access",
+          "description": "Revisit course content anytime, even after finishing the course."
+        },
+        {
+          "title": "Downloadable Resources",
+          "description": "Get cheat sheets, templates, and assignments to enhance learning."
+        },
+        {
+          "title": "Real-World Projects",
+          "description": "Build actual applications to showcase in your portfolio."
+        },
+        {
+          "title": "Instructor Q&A",
+          "description": "Get answers to your questions from the instructor or community."
+        }
+      ]
+    }
+  },
+  {
+    "id": "testimonials",
+    "name": "Testimonials",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "What Our Students Say",
+      "heading_alignment": "center",
+      "items": [
+        {
+          "author": "Liya T.",
+          "quote": "The Next.js course helped me land a job!"
+        },
+        {
+          "author": "Daniel M.",
+          "quote": "High-quality content and amazing support."
+        }
+      ]
+    }
+  },
+  {
+    "id": "course-list",
+    "name": "Course list",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "Popular Courses",
+      "number": 1,
+      "theme": "stacked"
+    }
+  },
+  {
+    "id": "featured-course",
+    "name": "Featured course",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "theme": "list",
+      "heading": "Featured course",
+      "heading_alignment": "center",
+      "pricing": true,
+      "item": {
+        "image": "/placeholder.svg",
+        "title": "Course title",
+        "description": "Dive deep into React Hooks and build powerful, reusable components with ease.",
+        "price": "450"
+      }
+    }
+  },
+  {
+    "id": "faq",
+    "name": "FAQ",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "items": [
+        {
+          "question": "Do I need to know React?",
+          "answer": "Basic React knowledge is recommended."
+        },
+        {
+          "question": "Will I get a certificate?",
+          "answer": "Yes, upon completion."
+        }
+      ]
+    }
+  },
+  {
+    "id": "call-to-action",
+    "name": "Call to Action",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "Ready to start learning?",
+      "description": "Join thousands of students and unlock your potential with our expert-led courses.",
+      "button_text": "Explore all courses"
+    }
+  },
+  {
+    "id": "multi-column-info",
+    "name": "Multi-column info",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "Headline text",
+      "heading_alignment": "center",
+      "items": [
+        {
+          "icon": "Settings",
+          "title": "something",
+          "description": "long text that describe something"
+        },
+        {
+          "icon": "Plus",
+          "title": "something",
+          "description": "long text that describe something"
+        }
+      ]
+    }
+  },
+  {
+    "id": "countdown-timer",
+    "name": "Countdown Timer",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "Limited Time Offer!",
+      "heading_alignment": "center",
+      "subtext": "Enroll now before the price goes up.",
+      "targetDate": "2025-07-31T23:59:59Z"
+    }
+  },
+  {
+    "id": "curriculum-overview",
+    "name": "Curriculum Overview",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "heading": "Course Curriculum",
+      "description": "A detailed breakdown of every topic covered in the course.",
+      "modules": [
+        {
+          "title": "Module 1: Getting Started",
+          "lessons": [
+            "Introduction to Next.js",
+            "Setting up your environment",
+            "Pages and Routing"
+          ]
+        },
+        {
+          "title": "Module 2: Core Concepts",
+          "lessons": [
+            "Data Fetching",
+            "Styling in Next.js",
+            "API Routes"
+          ]
+        },
+        {
+          "title": "Module 3: Advanced Topics",
+          "lessons": [
+            "Authentication",
+            "State Management",
+            "Deployment"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "stats-section",
+    "name": "Stats Section",
+    "type": "editable",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "stats": [
+        {
+          "value": "10,000+",
+          "label": "Students Enrolled"
+        },
+        {
+          "value": "4.9/5",
+          "label": "Average Rating"
+        },
+        {
+          "value": "50+",
+          "label": "Hours of Video"
+        },
+        {
+          "value": "30",
+          "label": "Downloadable Resources"
+        }
+      ]
+    }
+  },
+  {
+    "id": "navbar",
+    "name": "Navbar",
+    "type": "header",
+    "is_editable": true,
+    "is_deletable": false,
+    "content": {
+      "is_sticky": false,
+      "links_alignment": "center"
+    }
+  },
+  {
+    "id": "announcement-bar",
+    "name": "Announcement bar",
+    "type": "header",
+    "is_editable": true,
+    "is_deletable": true,
+    "content": {
+      "text": "Welcome back"
+    }
+  },
+  {
+    "id": "footer",
+    "name": "Footer",
+    "type": "footer",
+    "is_editable": true,
+    "is_deletable": false,
+    "data": {
+      "copyright_text": "© 2025 Your Course Platform. All rights reserved.",
+      "show_social_links": false
+    }
+  }
+]

@@ -45,8 +45,10 @@ model Website {
   member      Member[]
   social_media SocialMedia[]
   course      Course[]
-  page    Page[]
   transaction Transaction[]
+
+  page    Page[]
+  layer_section Json
   theme Json
 
   template Template @relation(fields: [template_id], references: [id])
@@ -81,6 +83,7 @@ model Template {
   website Website[]
   theme Json
   page TemplatePage[]
+  layer_section Json
 
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
