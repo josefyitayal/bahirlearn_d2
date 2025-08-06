@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 import { updateCourse } from '../actions/update-course';
 import { redirect } from 'next/navigation';
 
-export function CourseForm({ course, close }) {
+export function CourseForm({ course, close, setRefreshKey }) {
   const {
     handleSubmit,
     control,
@@ -24,7 +24,7 @@ export function CourseForm({ course, close }) {
   } = useForm({
     resolver: zodResolver(courseFormSchema),
     defaultValues: {
-      title: course?.title ?? '',
+      name: course?.name ?? '',
       description: course?.description ?? '',
       price: course?.price ?? 0,
       thumbnail: course?.thumbnail ?? '',
@@ -33,13 +33,14 @@ export function CourseForm({ course, close }) {
 
   async function onSubmit(values) {
     const {name, description, price, thumbnail} = values;
-    console.log(name, description, price, thumbnail)
+    
     if (course?.id) {
       console.log("course is editing")
       const {errors: updateErrors} = await updateCourse(course.id, {name, description,price, thumbnail})
       if (updateErrors) {
         toast(errors.message)
       }
+      setRefreshKey((prev) => prev + 1 )
     }else {
       console.log("course is creating")
       const {errors: createErrors, data: createData} = await createCourse(name, description, price, thumbnail)
@@ -50,6 +51,7 @@ export function CourseForm({ course, close }) {
     }
     close()
   }
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">

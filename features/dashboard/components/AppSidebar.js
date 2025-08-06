@@ -38,7 +38,7 @@ export function AppSidebar({ ...props }) {
                             {sidebarItems.map((item, index) => (
                                 <SidebarMenuButton
                                     key={index}
-                                    isActive={pathname === item.href}
+                                    isActive={pathname === item.href || (item.href.split("/").filter(Boolean).length > 1 && pathname.startsWith(item.href + "/"))}
                                     asChild
                                 >
                                     <Link href={item.href} className="w-full flex items-center gap-3">

@@ -2,14 +2,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { CourseForm } from "./CourseForm";
 
 
-export function CourseDialog({open, onOpenChange, course}) {
+export function CourseDialog({open, onOpenChange, setRefreshKey, course}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{course?.id ? "Edit course" : "Create course"}</DialogTitle>
         </DialogHeader>
-        <CourseForm course={course} close={() => onOpenChange(false)}/>
+        <CourseForm course={course} close={() => onOpenChange(false)} setRefreshKey={setRefreshKey}/>
       </DialogContent>
     </Dialog>
   )
