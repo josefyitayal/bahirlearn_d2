@@ -10,6 +10,7 @@ function LessonBuilderProvider({ children, course }) {
   const initialLesson = [{
       id: initialLessonId,
       title: "Untitled",
+      description: "",
       content: "<p>Type</p>",
       postion: 0
     }]
@@ -17,11 +18,12 @@ function LessonBuilderProvider({ children, course }) {
 
   const [currentLessonId, setCurrentLessonId] = useState(course.lesson && course.lesson.length > 0 ? course.lesson[0].id : initialLessonId);
 
-  function addLesson(title) {
+  function addLesson(title, description="") {
     const lastPosition = lessons.length > 0 ? lessons.at(-1)?.position ?? 0 : 0;
     const newLesson = {
       id: uuidv4(),
       title: title,
+      description: description, 
       content: "<p>Type</p>",
       postion: lastPosition 
     };

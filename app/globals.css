@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add this to your global CSS or Tailwind overrides */
+.ProseMirror p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -83,3 +89,51 @@
   }
 }
 
+@layer components {
+  .editor-content {
+    @apply text-base leading-relaxed text-gray-800 dark:text-gray-100;
+
+    /* Paragraphs */
+    p {
+      @apply mt-1 mb-1;
+    }
+
+    /* Headings */
+    h1, h2, h3 {
+      @apply font-semibold mt-4 mb-2;
+    }
+
+    /* Lists */
+    ul, ol {
+      @apply list-disc list-inside mt-2 mb-2 pl-4;
+    }
+
+    li {
+      @apply mt-1 mb-1;
+    }
+
+    /* Blockquotes */
+    blockquote {
+      @apply border-l-4 pl-4 italic text-gray-600 dark:text-gray-300;
+    }
+
+    /* Code blocks */
+    pre {
+      @apply bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto;
+    }
+
+    code {
+      @apply bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm;
+    }
+
+    /* Images */
+    img {
+      @apply max-w-full h-auto rounded;
+    }
+
+    /* Links */
+    a {
+      @apply text-blue-600 underline hover:text-blue-800;
+    }
+  }
+}

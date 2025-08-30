@@ -48,6 +48,7 @@ model Website {
   transaction Transaction[]
 
   page    Page[]
+  section Json?
   layer_section Json
   theme Json
 
@@ -148,7 +149,7 @@ model Course {
   website      Website   @relation(fields: [website_id], references: [id])
   website_id    String
   transaction Transaction[]
-  lesson      Lesson[]
+  module      Module[]
   enrollment  CourseEnrollment[]
 
   created_at    DateTime  @default(now())
@@ -160,15 +161,50 @@ enum COURSE_STATUS {
   PUBLISHED
 }
 
+enum ModuleType {
+  LESSON
+  QUIZ
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        ModuleType
+  position    Int
+
+  course_id   String
+  course      Course   @relation(fields: [course_id], references: [id])
+
+  lesson      Lesson?
+  quiz        Quiz?
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
 model Lesson {
   id         String   @id @default(cuid())
-  title      String
-  content    String // markdown or richtext
-  postion      Int
-  course     Course  @relation(fields: [course_id], references: [id])
-  course_id   String
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+  content    String   // markdown or richtext
+
+  module     Module   @relation(fields: [id], references: [id])
+}
+
+model Quiz {
+  id         String   @id @default(cuid())
+  prompt     String
+
+  questions QuizQuestion[]
+  module     Module   @relation(fields: [id], references: [id])
+}
+
+model QuizQuestion {
+  id String @id @default(cuid())
+  text String
+  quiz_id   String
+  quiz     Quiz         @relation(fields: [quiz_id], references: [id])
+  options String[]  
+  correct_index Int
 }
 
 model CourseEnrollment {

@@ -79,7 +79,7 @@ export function CourseCard({course, setSelectedCourse, setOpen, setRefreshKey}) 
       </div>
 
       <CardHeader className="p-4 space-y-1">
-        <Link href={`/dashboard/courses/${course.id}`}>
+        <Link href={`/edit/course/${course.id}`}>
           <CardTitle className="text-lg hover:underline transition">
             {course.name}
           </CardTitle>

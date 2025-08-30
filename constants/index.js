@@ -1,4 +1,4 @@
-import { BookMarked, Home, TvMinimal, Users } from "lucide-react";
+import { BookMarked, Home, TvMinimal, Users, Wallet } from "lucide-react";
 
 
 export const sidebarItems = [
@@ -13,13 +13,18 @@ export const sidebarItems = [
     href: "/dashboard/members"
   },
   {
+    icon: Wallet,
+    label: "Earn",
+    href: "/dashboard/earn"
+  },
+  {
     icon: BookMarked,
     label: "Course",
     href: "/dashboard/course"
   },
   {
     icon: TvMinimal,
-    label: "Website",
-    href: "/dashboard/website"
+    label: "Customize",
+    href: "/dashboard/customize"
   }
 ]

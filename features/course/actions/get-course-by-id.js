@@ -23,7 +23,9 @@ export const getCourseById = async (courseId) => {
               where: {
                 id: courseId
               },
-              include: {lesson: true}
+              include: {
+                module: true
+              }
             }
           },
         },

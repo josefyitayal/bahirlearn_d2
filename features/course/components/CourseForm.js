@@ -47,7 +47,7 @@ export function CourseForm({ course, close, setRefreshKey }) {
       if (createErrors) {
         toast(createErrors.message)
       }
-      redirect(`/dashboard/course/${createData.id}`)
+      redirect(`/edit/course/${createData.id}`)
     }
     close()
   }
