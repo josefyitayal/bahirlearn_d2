@@ -11,26 +11,26 @@ export function StatsSectionProperty({ section }) {
   const updateProperty = useWebsiteBuilder((state) => state.updateProperty)
 
   const handleStatChange = (index, field, value) => {
-    const newStats = [...(section.data?.stats || [])]
+    const newStats = [...(section.content?.stats || [])]
     newStats[index] = { ...newStats[index], [field]: value }
-    updateProperty(section.id, { data: { ...section.data, stats: newStats } })
+    updateProperty(section.id, { content: { ...section.content, stats: newStats } })
   }
 
   const addStat = () => {
-    const newStats = [...(section.data?.stats || []), { value: "New", label: "New Label" }]
-    updateProperty(section.id, { data: { ...section.data, stats: newStats } })
+    const newStats = [...(section.content?.stats || []), { value: "New", label: "New Label" }]
+    updateProperty(section.id, { content: { ...section.content, stats: newStats } })
   }
 
   const removeStat = (index) => {
-    const newStats = [...(section.data?.stats || [])]
+    const newStats = [...(section.content?.stats || [])]
     newStats.splice(index, 1)
-    updateProperty(section.id, { data: { ...section.data, stats: newStats } })
+    updateProperty(section.id, { content: { ...section.content, stats: newStats } })
   }
 
   return (
     <div className="w-full flex flex-col gap-6 p-4">
       <Label>Stats</Label>
-      {section.data?.stats?.map((stat, index) => (
+      {section.content?.stats?.map((stat, index) => (
         <div key={index} className="border rounded-xl p-4 flex flex-col gap-3">
           <div>
             <Label htmlFor={`stat-value-${index}`}>Value</Label>

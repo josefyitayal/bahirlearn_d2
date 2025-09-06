@@ -16,7 +16,7 @@ export async function CurrentTemplate({template}) {
       </div>
       <div>
         <Button asChild>
-          <Link href={"/dashboard/editor"}>Customize</Link>
+          <Link href={"/edit/website"}>Customize</Link>
         </Button>
       </div>
     </div>

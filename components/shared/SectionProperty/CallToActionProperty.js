@@ -11,8 +11,8 @@ export function CallToActionProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
@@ -24,7 +24,7 @@ export function CallToActionProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
@@ -33,7 +33,7 @@ export function CallToActionProperty({ section }) {
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
-          value={section.data?.description || ""}
+          value={section.content?.description || ""}
           onChange={(e) => handleChange("description", e.target.value)}
         />
       </div>
@@ -42,7 +42,7 @@ export function CallToActionProperty({ section }) {
         <Label htmlFor="button_text">Button Text</Label>
         <Input
           id="button_text"
-          value={section.data?.button_text || ""}
+          value={section.content?.button_text || ""}
           onChange={(e) => handleChange("button_text", e.target.value)}
         />
       </div>

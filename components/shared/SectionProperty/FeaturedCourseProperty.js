@@ -13,8 +13,8 @@ export function FeaturedCourseProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
@@ -22,10 +22,10 @@ export function FeaturedCourseProperty({ section }) {
 
   const handleItemChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         item: {
-          ...section.data?.item,
+          ...section.content?.item,
           [field]: value,
         },
       },
@@ -39,7 +39,7 @@ export function FeaturedCourseProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
@@ -49,7 +49,7 @@ export function FeaturedCourseProperty({ section }) {
         <Label htmlFor="heading_alignment">Heading Alignment</Label>
         <Select
           id="heading_alignment"
-          value={section.data?.heading_alignment}
+          value={section.content?.heading_alignment}
           onValueChange={(val) => handleChange("heading_alignment", val)}
         >
           <SelectTrigger className="w-full">
@@ -68,7 +68,7 @@ export function FeaturedCourseProperty({ section }) {
         <Label htmlFor="theme">Theme</Label>
         <Select
           id="theme"
-          value={section.data?.theme}
+          value={section.content?.theme}
           onValueChange={(val) => handleChange("theme", val)}
         >
           <SelectTrigger className="w-full">
@@ -87,7 +87,7 @@ export function FeaturedCourseProperty({ section }) {
         <Label htmlFor="pricing">Show Pricing</Label>
         <Switch
           id="pricing"
-          checked={!!section.data?.pricing}
+          checked={!!section.content?.pricing}
           onCheckedChange={(val) => handleChange("pricing", val)}
         />
       </div>
@@ -100,7 +100,7 @@ export function FeaturedCourseProperty({ section }) {
           <Label htmlFor="item-image">Image</Label>
           <Input
             id="item-image"
-            value={section.data?.item?.image || ""}
+            value={section.content?.item?.image || ""}
             onChange={(e) => handleItemChange("image", e.target.value)}
           />
         </div>
@@ -109,7 +109,7 @@ export function FeaturedCourseProperty({ section }) {
           <Label htmlFor="item-title">Title</Label>
           <Input
             id="item-title"
-            value={section.data?.item?.title || ""}
+            value={section.content?.item?.title || ""}
             onChange={(e) => handleItemChange("title", e.target.value)}
           />
         </div>
@@ -118,18 +118,18 @@ export function FeaturedCourseProperty({ section }) {
           <Label htmlFor="item-description">Description</Label>
           <Textarea
             id="item-description"
-            value={section.data?.item?.description || ""}
+            value={section.content?.item?.description || ""}
             onChange={(e) => handleItemChange("description", e.target.value)}
           />
         </div>
 
-        {section.data?.pricing && (
+        {section.content?.pricing && (
           <div>
             <Label htmlFor="item-price">Price</Label>
             <Input
               type="number"
               id="item-price"
-              value={section.data?.item?.price || ""}
+              value={section.content?.item?.price || ""}
               onChange={(e) => handleItemChange("price", e.target.value)}
             />
           </div>

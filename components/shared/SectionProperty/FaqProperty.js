@@ -12,27 +12,27 @@ export function FaqProperty({ section }) {
   const updateProperty = useWebsiteBuilder((state) => state.updateProperty)
 
   const handleItemChange = (index, field, value) => {
-    const newItems = [...(section.data?.items || [])]
+    const newItems = [...(section.content?.items || [])]
     newItems[index] = { ...newItems[index], [field]: value }
     updateProperty(section.id, {
-      data: { ...section.data, items: newItems },
+      content: { ...section.content, items: newItems },
     })
   }
 
   const addItem = () => {
     const newItems = [
-      ...(section.data?.items || []),
+      ...(section.content?.items || []),
       { question: "New question?", answer: "New answer goes here." },
     ]
     updateProperty(section.id, {
-      data: { ...section.data, items: newItems },
+      content: { ...section.content, items: newItems },
     })
   }
 
   const removeItem = (index) => {
-    const newItems = (section.data?.items || []).filter((_, i) => i !== index)
+    const newItems = (section.content?.items || []).filter((_, i) => i !== index)
     updateProperty(section.id, {
-      data: { ...section.data, items: newItems },
+      content: { ...section.content, items: newItems },
     })
   }
 
@@ -40,7 +40,7 @@ export function FaqProperty({ section }) {
     <div className="w-full flex flex-col gap-6 p-4">
       <div className="flex flex-col gap-4">
         <Label>FAQ Items</Label>
-        {section.data?.items?.map((item, index) => (
+        {section.content?.items?.map((item, index) => (
           <div key={index} className="border rounded-xl p-4 flex flex-col gap-3">
             <div>
               <Label htmlFor={`question-${index}`}>Question</Label>

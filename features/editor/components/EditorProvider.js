@@ -1,15 +1,20 @@
+"use client"
 
-"use client";
+import { useRef } from "react";
+import useWebsiteBuilder from "../store/websiteStore";
 
-import { useEffect } from "react";
-import useWebsiteBuilder from "@/features/editor/store/websiteStore";
+export function EditorProvider({ initialSections, layerSection, subdomain, children }) {
+  const setLandingPageSections = useWebsiteBuilder((state) => state.setLandingPageSections);
+  const setLayerSection = useWebsiteBuilder((state) => state.setLayerSection);
+  const setSubdomain = useWebsiteBuilder((state) => state.setSubdomain);
 
-export function EditorProvider({ initialSections, children }) {
-  const setLandingPageSections = useWebsiteBuilder((state) => state.setLandingPageSections)
-  
-  useEffect(() => {
+  const initialized = useRef(false);
+  if (!initialized.current) {
     setLandingPageSections(initialSections);
-  }, [initialSections, setLandingPageSections]);
+    setSubdomain(subdomain);
+    setLayerSection(layerSection);
+    initialized.current = true;
+  }
 
   return children;
 }

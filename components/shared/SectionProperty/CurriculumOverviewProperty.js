@@ -13,46 +13,46 @@ export function CurriculumOverviewProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
   }
 
   const handleModuleChange = (moduleIndex, field, value) => {
-    const newModules = [...(section.data?.modules || [])]
+    const newModules = [...(section.content?.modules || [])]
     newModules[moduleIndex] = { ...newModules[moduleIndex], [field]: value }
     handleChange("modules", newModules)
   }
 
   const handleLessonChange = (moduleIndex, lessonIndex, value) => {
-    const newModules = [...(section.data?.modules || [])]
+    const newModules = [...(section.content?.modules || [])]
     newModules[moduleIndex].lessons[lessonIndex] = value
     handleChange("modules", newModules)
   }
 
   const addModule = () => {
     handleChange("modules", [
-      ...(section.data?.modules || []),
+      ...(section.content?.modules || []),
       { title: "New Module", lessons: ["New Lesson"] },
     ])
   }
 
   const removeModule = (index) => {
-    const newModules = [...(section.data?.modules || [])]
+    const newModules = [...(section.content?.modules || [])]
     newModules.splice(index, 1)
     handleChange("modules", newModules)
   }
 
   const addLesson = (moduleIndex) => {
-    const newModules = [...(section.data?.modules || [])]
+    const newModules = [...(section.content?.modules || [])]
     newModules[moduleIndex].lessons.push("New Lesson")
     handleChange("modules", newModules)
   }
 
   const removeLesson = (moduleIndex, lessonIndex) => {
-    const newModules = [...(section.data?.modules || [])]
+    const newModules = [...(section.content?.modules || [])]
     newModules[moduleIndex].lessons.splice(lessonIndex, 1)
     handleChange("modules", newModules)
   }
@@ -64,7 +64,7 @@ export function CurriculumOverviewProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
@@ -74,7 +74,7 @@ export function CurriculumOverviewProperty({ section }) {
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
-          value={section.data?.description || ""}
+          value={section.content?.description || ""}
           onChange={(e) => handleChange("description", e.target.value)}
         />
       </div>
@@ -82,7 +82,7 @@ export function CurriculumOverviewProperty({ section }) {
       {/* Modules */}
       <div className="flex flex-col gap-4">
         <Label>Modules</Label>
-        {section.data?.modules?.map((module, moduleIndex) => (
+        {section.content?.modules?.map((module, moduleIndex) => (
           <div key={moduleIndex} className="border rounded-xl p-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <Label>Module {moduleIndex + 1} Title</Label>

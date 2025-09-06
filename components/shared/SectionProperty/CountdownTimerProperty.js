@@ -11,8 +11,8 @@ export function CountdownTimerProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
@@ -25,7 +25,7 @@ export function CountdownTimerProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
@@ -35,7 +35,7 @@ export function CountdownTimerProperty({ section }) {
         <Label htmlFor="heading_alignment">Heading Alignment</Label>
         <Select
           id="heading_alignment"
-          value={section.data?.heading_alignment || "center"}
+          value={section.content?.heading_alignment || "center"}
           onValueChange={(val) => handleChange("heading_alignment", val)}
         >
           <SelectTrigger className="w-full">
@@ -54,7 +54,7 @@ export function CountdownTimerProperty({ section }) {
         <Label htmlFor="subtext">Subtext</Label>
         <Textarea
           id="subtext"
-          value={section.data?.subtext || ""}
+          value={section.content?.subtext || ""}
           onChange={(e) => handleChange("subtext", e.target.value)}
         />
       </div>
@@ -66,8 +66,8 @@ export function CountdownTimerProperty({ section }) {
           type="datetime-local"
           id="targetDate"
           value={
-            section.data?.targetDate
-              ? new Date(section.data.targetDate).toISOString().slice(0, 16)
+            section.content?.targetDate
+              ? new Date(section.content.targetDate).toISOString().slice(0, 16)
               : ""
           }
           onChange={(e) => handleChange("targetDate", new Date(e.target.value).toISOString())}

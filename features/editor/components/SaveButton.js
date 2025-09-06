@@ -12,12 +12,14 @@ export function SaveButton() {
   const subdomain = useWebsiteBuilder((state) => state.subdomain)
 
   async function handleSave() {
-    if (landingPageSections || landingPageSections.length > 0 || subdomain) {
+    console.log(subdomain)
+    if (landingPageSections && landingPageSections.length > 0 && subdomain) {
       setIsLoading(true)
-      const {error, data} = await saveLandingPageSection(landingPageSections, subdomain)  
-      if (error) {
-        toast.error(error.message)
-      }else {
+      const {errors, data} = await saveLandingPageSection(landingPageSections, subdomain)  
+      if (errors) {
+        toast.error(errors.message)
+      } 
+      else if (data)  {
         toast.success("Successfully saved")
       }
       setIsLoading(false)

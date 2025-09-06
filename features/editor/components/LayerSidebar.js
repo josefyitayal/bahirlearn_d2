@@ -2,23 +2,27 @@
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { LayoutPanelTop, Trash2 } from "lucide-react";
+import { Layers, LayoutPanelTop, LayoutTemplate, Trash2 } from "lucide-react";
 import useWebsiteBuilder from "../store/websiteStore";
 import { AddSectionButton } from "./AddSection";
+import { Separator } from "@/components/ui/separator";
 
 export function LayerSidebar() {
   const landingPageSections = useWebsiteBuilder((state) => state.landingPageSections)
   const setSelectedSectionId = useWebsiteBuilder((state) => state.setSelectedSectionId)
+  const selectedSectionId = useWebsiteBuilder((state) => state.selectedSectionId)
+  const layerSection = useWebsiteBuilder((state) => state.layerSection)
   const removeSection = useWebsiteBuilder((state) => state.removeSection)
 
   function handleClickingSection(sectionId) {
-      setSelectedSectionId(sectionId)
+    setSelectedSectionId(sectionId)
   }
-  
+
   function handleDeleteSection(sectionId) {
     removeSection(sectionId)
   }
-
+  console.log(landingPageSections[0], "77777777777")
+  console.log(layerSection, "9999999999999")
   // if (!landingPageSections || landingPageSections.length === 0) {
   //   return <div className="p-4 text-muted-foreground">No sections found for this page.</div>
   // }
@@ -30,15 +34,45 @@ export function LayerSidebar() {
       </div>
 
       <ScrollArea className="flex-1 px-3 py-4 space-y-1">
-        {landingPageSections?.map((section) => (
+        {layerSection?.header.map((section) => (
           <Button
             key={section.id}
-            variant="ghost"
+            variant={selectedSectionId === section.id ? "secondary" : "ghost"}
             onClick={() => handleClickingSection(section.id)}
             className="w-full justify-between px-3 group flex items-center transition-colors duration-200"
           >
             <div className="flex items-center gap-2">
-              <LayoutPanelTop />
+              <LayoutTemplate />
+              <span className="truncate text-sm font-medium text-left">
+                {section.name}
+              </span>
+            </div>
+
+            {/* Fix: render asChild to avoid nested <button> */}
+            {section.is_deletable && (
+              <Button
+                variant="icon"
+                onClick={() => handleDeleteSection(section.id)}
+                asChild
+                className="opacity-0 p-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-destructive"
+              >
+                <span>
+                  <Trash2 />
+                </span>
+              </Button>
+            )}
+          </Button>
+        ))}
+        <Separator />
+        {landingPageSections?.map((section) => (
+          <Button
+            key={section.id}
+            variant={selectedSectionId === section.id ? "secondary" : "ghost"}
+            onClick={() => handleClickingSection(section.id)}
+            className="w-full justify-between px-3 group flex items-center transition-colors duration-200"
+          >
+            <div className="flex items-center gap-2">
+              <Layers />
               <span className="truncate text-sm font-medium text-left">
                 {section.name}
               </span>
@@ -57,8 +91,37 @@ export function LayerSidebar() {
             </Button>
           </Button>
         ))}
-      </ScrollArea>
+        <Separator />
+        {layerSection?.footer.map((section) => (
+          <Button
+            key={section.id}
+            variant={selectedSectionId === section.id ? "secondary" : "ghost"}
+            onClick={() => handleClickingSection(section.id)}
+            className="w-full justify-between px-3 group flex items-center transition-colors duration-200"
+          >
+            <div className="flex items-center gap-2">
+              <LayoutTemplate />
+              <span className="truncate text-sm font-medium text-left">
+                {section.name}
+              </span>
+            </div>
 
+            {/* Fix: render asChild to avoid nested <button> */}
+            {section.is_deletable && (
+              <Button
+                variant="icon"
+                onClick={() => handleDeleteSection(section.id)}
+                asChild
+                className="opacity-0 p-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-destructive"
+              >
+                <span>
+                  <Trash2 />
+                </span>
+              </Button>
+            )}
+          </Button>
+        ))}
+      </ScrollArea>
       <div className="p-3 border-t border-gray-200">
         <AddSectionButton className="w-full" />
       </div>

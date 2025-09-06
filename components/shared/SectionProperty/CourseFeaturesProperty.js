@@ -12,19 +12,19 @@ export function CourseFeaturesProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
   }
 
   const handleFeatureChange = (index, field, value) => {
-    const newFeatures = [...(section.data?.features || [])]
+    const newFeatures = [...(section.content?.features || [])]
     newFeatures[index] = { ...newFeatures[index], [field]: value }
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         features: newFeatures,
       },
     })
@@ -32,18 +32,18 @@ export function CourseFeaturesProperty({ section }) {
 
   const addFeature = () => {
     const newFeatures = [
-      ...(section.data?.features || []),
+      ...(section.content?.features || []),
       { title: "New Feature", description: "Description goes here..." },
     ]
     updateProperty(section.id, {
-      data: { ...section.data, features: newFeatures },
+      content: { ...section.content, features: newFeatures },
     })
   }
 
   const removeFeature = (index) => {
-    const newFeatures = (section.data?.features || []).filter((_, i) => i !== index)
+    const newFeatures = (section.content?.features || []).filter((_, i) => i !== index)
     updateProperty(section.id, {
-      data: { ...section.data, features: newFeatures },
+      content: { ...section.content, features: newFeatures },
     })
   }
 
@@ -53,14 +53,14 @@ export function CourseFeaturesProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
 
       <div className="flex flex-col gap-4">
         <Label>Features</Label>
-        {section.data?.features?.map((feature, index) => (
+        {section.content?.features?.map((feature, index) => (
           <div key={index} className="border rounded-xl p-4 flex flex-col gap-2 relative">
             <div>
               <Label htmlFor={`feature-title-${index}`}>Title</Label>

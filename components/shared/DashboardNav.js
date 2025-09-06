@@ -17,7 +17,7 @@ export function DashboardNav({
       {...props}
       className={cn(
         "w-full flex items-center justify-between h-14 px-4",
-        "bg-white",
+        "",
         border && "border-b border-gray-200",
         className
       )}

@@ -6,6 +6,7 @@ const useWebsiteBuilder = create(
   persist(
     (set, get) => ({
       landingPageSections: [],
+      layerSection: {},
       selectedSectionId: null,
       subdomain: null,
 
@@ -42,6 +43,17 @@ const useWebsiteBuilder = create(
           ),
         })),
 
+      updateLayoutSection: (sectionType, id, data) =>
+        set((state) => ({
+          layoutSections: {
+            ...state.layoutSections,
+            [sectionType]: state.layoutSections[sectionType].map((section) =>
+              section.id === id ? { ...section, ...data } : section
+            ),
+          },
+        })),
+
+
       // Reorder sections by index
       moveSection: (fromIndex, toIndex) =>
         set((state) => {
@@ -54,6 +66,9 @@ const useWebsiteBuilder = create(
       // Replace the entire template array
       setLandingPageSections: (newLandingPageSections) =>
         set(() => ({ landingPageSections: newLandingPageSections })),
+
+      setLayerSection: (newLayerSection) =>
+        set(() => ({ layerSection: newLayerSection })),
 
       // Just change selection
       setSelectedSectionId: (id) =>

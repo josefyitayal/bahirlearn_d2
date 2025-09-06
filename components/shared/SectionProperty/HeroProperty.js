@@ -10,20 +10,20 @@ export function HeroProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
   }
-
+  console.log(section, "sdkfjksdjfksjd")
   return (
     <div className="w-full flex flex-col gap-4 p-4">
       <div>
         <Label htmlFor="headline">Headline</Label>
         <Input
           id="headline"
-          value={section.data?.headline || ""}
+          value={section.content?.headline || ""}
           onChange={(e) => handleChange("headline", e.target.value)}
         />
       </div>
@@ -32,7 +32,7 @@ export function HeroProperty({ section }) {
         <Label htmlFor="subtext">Subtext</Label>
         <Input
           id="subtext"
-          value={section.data?.subtext || ""}
+          value={section.content?.subtext || ""}
           onChange={(e) => handleChange("subtext", e.target.value)}
         />
       </div>
@@ -41,25 +41,16 @@ export function HeroProperty({ section }) {
         <Label htmlFor="cta_text">CTA Text</Label>
         <Input
           id="cta_text"
-          value={section.data?.cta_text || ""}
+          value={section.content?.cta_text || ""}
           onChange={(e) => handleChange("cta_text", e.target.value)}
         />
       </div>
 
       <div>
-        <Label htmlFor="cta_link">CTA Link</Label>
-        <Input
-          id="cta_link"
-          value={section.data?.cta_link || ""}
-          onChange={(e) => handleChange("cta_link", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="image">Image Path</Label>
+        <Label htmlFor="image">Image Url</Label>
         <Input
           id="image"
-          value={section.data?.image || ""}
+          value={section.content?.image || ""}
           onChange={(e) => handleChange("image", e.target.value)}
         />
       </div>
@@ -68,7 +59,7 @@ export function HeroProperty({ section }) {
         <Label htmlFor="image_position">Image Position</Label>
         <Select
           id="image_position"
-          value={section.data?.image_position}
+          value={section.content?.image_position}
           onValueChange={(val) => handleChange("image_position", val)}
         >
           <SelectTrigger className="w-full">

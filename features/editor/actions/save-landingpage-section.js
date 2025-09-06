@@ -10,12 +10,14 @@ export const saveLandingPageSection = async (sectionData, subdomain) => {
       throw new Error("User not authorized");
     }
 
-    const updated = await client.course.update({
+    if (!sectionData && !subdomain) {
+      throw new Error("sectionData or subdomain is not filled")
+    }
+    const updated = await client.website.update({
       where: { subdomain: subdomain },
-      update: {
+      data: {
         section: sectionData
-      },
-      create: {}
+      }
     });
 
     if (updated) {

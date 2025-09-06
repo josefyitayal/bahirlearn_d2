@@ -14,19 +14,19 @@ export function TestimonialsProperty({ section }) {
 
   const handleChange = (field, value) => {
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         [field]: value,
       },
     })
   }
 
   const handleItemChange = (index, field, value) => {
-    const newItems = [...(section.data?.items || [])]
+    const newItems = [...(section.content?.items || [])]
     newItems[index] = { ...newItems[index], [field]: value }
     updateProperty(section.id, {
-      data: {
-        ...section.data,
+      content: {
+        ...section.content,
         items: newItems,
       },
     })
@@ -34,18 +34,18 @@ export function TestimonialsProperty({ section }) {
 
   const addItem = () => {
     const newItems = [
-      ...(section.data?.items || []),
+      ...(section.content?.items || []),
       { author: "New Author", quote: "New testimonial goes here..." },
     ]
     updateProperty(section.id, {
-      data: { ...section.data, items: newItems },
+      content: { ...section.content, items: newItems },
     })
   }
 
   const removeItem = (index) => {
-    const newItems = (section.data?.items || []).filter((_, i) => i !== index)
+    const newItems = (section.content?.items || []).filter((_, i) => i !== index)
     updateProperty(section.id, {
-      data: { ...section.data, items: newItems },
+      content: { ...section.content, items: newItems },
     })
   }
 
@@ -55,7 +55,7 @@ export function TestimonialsProperty({ section }) {
         <Label htmlFor="heading">Heading</Label>
         <Input
           id="heading"
-          value={section.data?.heading || ""}
+          value={section.content?.heading || ""}
           onChange={(e) => handleChange("heading", e.target.value)}
         />
       </div>
@@ -64,7 +64,7 @@ export function TestimonialsProperty({ section }) {
         <Label htmlFor="heading_alignment">Heading Alignment</Label>
         <Select
           id="heading_alignment"
-          value={section.data?.heading_alignment}
+          value={section.content?.heading_alignment}
           onValueChange={(val) => handleChange("heading_alignment", val)}
         >
           <SelectTrigger className="w-full">
@@ -80,7 +80,7 @@ export function TestimonialsProperty({ section }) {
 
       <div className="flex flex-col gap-4">
         <Label>Testimonials</Label>
-        {section.data?.items?.map((item, index) => (
+        {section.content?.items?.map((item, index) => (
           <div key={index} className="border rounded-xl p-4 flex flex-col gap-2">
             <div>
               <Label htmlFor={`author-${index}`}>Author</Label>
