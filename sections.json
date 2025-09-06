@@ -164,12 +164,10 @@
       "heading_alignment": "center",
       "items": [
         {
-          "icon": "Settings",
           "title": "something",
           "description": "long text that describe something"
         },
         {
-          "icon": "Plus",
           "title": "something",
           "description": "long text that describe something"
         }

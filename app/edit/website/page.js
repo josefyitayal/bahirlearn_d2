@@ -9,11 +9,14 @@ function page() {
   const subdomain = useWebsiteBuilder((state) => state.subdomain)
 
   return (
-    <div className="h-full bg-gray-100 p-4">
-      {/* Rendered preview/editor will go here */}
-      <ScrollArea className="h-full w-full flex flex-col items-center rounded-md border shadow-md">
+    <div className="h-full p-6">
+      <ScrollArea className="h-full w-full flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow-sm">
         {landingPageSections.map((section) => (
-          <ComponentSwitcher key={section.id} section={section} subdomain={subdomain}/>
+          <ComponentSwitcher
+            key={section.id}
+            section={section}
+            subdomain={subdomain}
+          />
         ))}
       </ScrollArea>
     </div>

@@ -1,42 +1,52 @@
-"use client"
-
-import {useState, useEffect} from "react"
 import { DashboardNav } from "@/components/shared/DashboardNav";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LayerSidebar } from "@/features/editor/components/LayerSidebar";
 import { Propertybar } from "@/features/editor/components/Propertybar";
-import useWebsiteBuilder from "@/features/editor/store/websiteStore";
+import { EditorProvider } from "@/features/editor/components/EditorProvider"
 import { getUserSection } from "@/features/website/actions/get-user-sections";
-import { toast } from "sonner";
+import { SaveButton } from "@/features/editor/components/SaveButton";
 
-export default function WebsiteEditorLayout({children}) {
-  const setLandingPageSections = useWebsiteBuilder((state) => state.setLandingPageSections)
+export default async function WebsiteEditorLayout({ children }) {
+  const { error, data } = await getUserSection()
+  if (error) {
+    return (<div className="text-center">{error.message}</div>)
+  }
 
-  useEffect(() => {
-    async function getData() {
-      const {error, data} = await getUserSection()
-      if (error) {
-        toast.error(error.message)
-      }
-      setLandingPageSections(data.section || [])
-    }
-    getData()
-  }, [])
+  const section = data.section || []
 
   return (
-    <div className="flex flex-col min-h-screen h-screen max-h-screen bg-gray-50 text-gray-800">
-      <DashboardNav back_button={true} border={true} title={"Customize landing page"}>
-        <div className="flex items-center gap-3">
-          <Badge variant={"default"} className={"bg-green-500 text-green-950"}>Live</Badge> 
-          <Button>Save</Button>
+    <EditorProvider initialSections={section}>
+      <div className="flex flex-col h-screen min-h-screen bg-gray-50">
+        {/* Top Nav */}
+        <DashboardNav
+          back_button
+          border
+          title="Customize landing page"
+          className="bg-white shadow-sm px-4"
+        >
+          <div className="flex items-center gap-3">
+            <Badge variant="secondary" className="bg-green-100 text-green-800">
+              Live
+            </Badge>
+            <SaveButton />
+          </div>
+        </DashboardNav>
+
+        {/* Main Editor Area */}
+        <div className="flex flex-1 h-[100%]">
+          {/* Left Sidebar */}
+          <LayerSidebar />
+
+          {/* Center Canvas */}
+          <div className="flex-1 overflow-auto bg-gray-100">
+            {children}
+          </div>
+
+          {/* Right Sidebar */}
+          <Propertybar />
         </div>
-      </DashboardNav>
-      <div className="flex items-start h-[calc(100vh-65px)]">
-        <LayerSidebar />
-        {children}
-        <Propertybar />
       </div>
-    </div>
+    </EditorProvider>
   )
 }
