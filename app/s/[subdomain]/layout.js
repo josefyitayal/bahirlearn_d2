@@ -25,15 +25,15 @@ async function Layout({children, params}) {
   const {errors, data} = await getWebsiteBySubdomain(subdomain);
   return (
     <div>
-      {data.layer_section.header.map((sec) => {
+      {data.layer_section?.header.map((sec) => ( 
         <ComponentSwitcher key={sec.id} section={sec} subdomain={subdomain}/>
-      })}
+      ))}
       <main>
         {React.cloneElement(children, { websiteData: data })}
       </main>
-      {data.layer_section.footer.map((sec) => {
+      {data.layer_section.footer.map((sec) => (
         <ComponentSwitcher key={sec.id} section={sec} subdomain={subdomain}/>
-      })}
+      ))}
     </div>
   );
 }

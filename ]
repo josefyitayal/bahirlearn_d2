@@ -1,6 +1,5 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
 import {
   DndContext,
   closestCenter,
@@ -13,15 +12,15 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { ModuleSidebarItem } from "./ModuleSidebarItem";
+import { ModuleContentItem } from "./ModuleContentItem";
+import { useEffect, useState } from "react";
 import { useModuleBuilder } from "../context/moduleBuilderContext";
-import {Plus} from "lucide-react"
-import {Button} from "@/components/ui/button"
 
-export function ModuleSidebar() {
+
+export function ModuleContents({contents, moduleId}) {
   const [mounted, setMounted] = useState(false);
 
-  const {addModule, addContent, removeModule, updateModule, modules, setModules, currentModuleId, setCurrentModuleId} = useModuleBuilder()
+  const {addContent, removeContent, updateContent, modules, setModules, currentModuleId, currentModuleContentId, setCurrentModuleContentId} = useModuleBuilder()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -40,22 +39,15 @@ export function ModuleSidebar() {
       setModules(newModules);
     }
   };
+  console.log(contents)
 
-  function handleAddModuleContent(data) {
-    addContent(data.id, data.content_type)
-  }
-
-  function handleCreateModule() {
-    addModule()
-  } 
+  // function handleCreateModule(data) {
+  //   addModule(data.title, data.description)
+  // }
 
   if (!mounted) return null; // Prevent SSR mismatch
   return (
-    <div className="w-full flex flex-col px-5 border-r h-full">
-      <div className="py-3 flex items-center justify-between">
-        <p>Modules</p>
-        <Button onClick={() => handleCreateModule()} variant="icon"><Plus /></Button>
-      </div>
+    <div className="w-full flex flex-col ml-5 pr-4 pl-8  border-l h-full">
       <div className="">
         <DndContext
           sensors={sensors}
@@ -66,16 +58,17 @@ export function ModuleSidebar() {
             items={modules.map((module) => module.id)}
             strategy={verticalListSortingStrategy}
           >
-            <div className="flex flex-col gap-1.5">
-              {modules.map((module) => (
-                <ModuleSidebarItem
-                  key={module.id}
-                  id={module.id}
-                  title={module.title}
-                  contents={module.contents}
-                  onRename={(id, newTitle) => updateModule(id, { title: newTitle })}
-                  onRemove={removeModule}
-                  onAdd={(data) => handleAddModuleContent(data)}
+            <div className="flex flex-col gap-1">
+              {contents.map((cont) => (
+                <ModuleContentItem
+                  key={cont.id}
+                  id={cont.id}
+                  title={cont.lesson.title}
+                  content_type={cont.content_type}
+                  isSelected={currentModuleContentId === cont.id}
+                  onSelect={() => setCurrentModuleContentId(cont.id)}
+                  onRename={(id, newTitle) => updateContent(moduleId, id, { title: newTitle })}
+                  onRemove={(id) => removeContent(moduleId, id)}
                 />
               ))}
             </div>

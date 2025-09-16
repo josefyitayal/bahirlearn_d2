@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { client } from "@/lib/db";
 
-export const saveLandingPageSection = async (sectionData, subdomain) => {
+export const saveLandingPageSection = async (sectionData, layerSection, subdomain) => {
   try {
     const { userId } = await auth(); // safer than currentUser()
     if (!userId) {
@@ -16,7 +16,8 @@ export const saveLandingPageSection = async (sectionData, subdomain) => {
     const updated = await client.website.update({
       where: { subdomain: subdomain },
       data: {
-        section: sectionData
+        section: sectionData,
+        layer_section: layerSection
       }
     });
 

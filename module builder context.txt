@@ -1,0 +1,188 @@
+
+"use client";
+
+import React, { useContext, useState, useEffect, createContext } from "react";
+import cuid from "cuid";
+
+const moduleBuilderContext = createContext(undefined);
+
+function ModuleBuilderProvider({ children, course }) {
+  const initialModuleId = cuid()
+  const initialLessonId = cuid()
+  const initialModule = [{
+    id: initialModuleId,
+    title: "Untitled",
+    description: "",
+    type: "lesson",
+    position: 0,
+    lesson: {
+      id: initialLessonId,
+      content: `<div data-youtube-video=""><iframe width="640" height="480" allowfullscreen="true" autoplay="false" disablekbcontrols="false" enableiframeapi="false" endtime="0" ivloadpolicy="0" loop="true" modestbranding="true" origin="" playlist="" rel="1" src="https://www.youtube-nocookie.com/embed/N4JDlSTMOck?si=geNMEW-mY_ibPGby" start="0"></iframe></div><p><strong>Lesson Long Description</strong></p><ul><li><p>and other bullet print</p></li><li><p>bullets </p></li><li><p>bullets</p></li></ul><p></p>`
+    }
+  }]
+
+  const [modules, setModules] = useState(
+    course.module && course.module.length > 0
+      ? course.module
+      : initialModule
+  );
+
+  const [currentModuleId, setCurrentModuleId] = useState(
+    course.module && course.module.length > 0
+      ? course.module[0].id
+      : initialModuleId
+  );
+
+  // Load from localStorage (client‑only)
+  useEffect(() => {
+    const stored = localStorage.getItem("module-builder-data");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setModules(parsed);
+      // Auto‑select the first module if we have any
+      if (parsed.length > 0) {
+        setCurrentModuleId(parsed[0].id);
+      }
+    } else {
+      // No localStorage? fall back to first in existing modules
+      if (modules.length > 0) {
+        setCurrentModuleId(modules[0].id);
+      }
+    }
+  }, []);
+
+  // Keep localStorage updated
+  useEffect(() => {
+    localStorage.setItem("module-builder-data", JSON.stringify(modules));
+  }, [modules]);
+
+  function addModule(type, title, description = "") {
+    description = description ?? "";
+    const lastPosition = modules.length > 0 ? modules.at(-1)?.position ?? 0 : 0;
+    const newModuleBase = {
+      id: cuid(),
+      title: title,
+      description: description,
+      type: type,
+      position: lastPosition,
+      created_at: new Date(),
+      updated_at: new Date()
+    };
+
+    let newModule;
+
+    if (type === "lesson") {
+      const lessonId = cuid()
+      newModule = {
+        ...newModuleBase,
+        lesson: {
+          id: lessonId,
+          content: `<div data-youtube-video=""><iframe width="640" height="480" allowfullscreen="true" autoplay="false" disablekbcontrols="false" enableiframeapi="false" endtime="0" ivloadpolicy="0" loop="true" modestbranding="true" origin="" playlist="" rel="1" src="https://www.youtube-nocookie.com/embed/N4JDlSTMOck?si=geNMEW-mY_ibPGby" start="0"></iframe></div><p><strong>Lesson Long Description</strong></p><ul><li><p>and other bullet print</p></li><li><p>bullets </p></li><li><p>bullets</p></li></ul><p></p>`
+        },
+        quiz: null
+      }
+    } else if (type === "quiz") {
+      newModule = {
+        ...newModuleBase,
+        lesson: null,
+        quiz: {
+          id: cuid(), // frontend id, optional
+          prompt: "",
+          questions: [
+            {
+              id: cuid(),
+              text: "Placeholder question",
+              options: [
+                { id: cuid(), text: "Option 1" },
+                { id: cuid(), text: "Option 2" }
+              ],
+              correct: null
+            }
+          ],
+        }
+      };
+    } else {
+      throw new Error("invalid module type")
+    }
+
+    setModules((prevModules) => [...prevModules, newModule]);
+    setCurrentModuleId(newModule.id);
+  }
+
+
+  const removeModule = (id) => {
+    setModules((prevModules) => {
+      const updatedModules = prevModules.filter((module) => module.id !== id);
+
+      // Select last lesson if there is one
+      if (updatedModules.length > 0) {
+        setCurrentModuleId(updatedModules[updatedModules.length - 1].id);
+      } else {
+        setCurrentModuleId(null);
+      }
+
+      return updatedModules;
+    });
+  };
+
+
+  function updateModule(id, data) {
+    setModules(prev =>
+      prev.map(module => (module.id === id ? { ...module, ...data } : module))
+    );
+  }
+
+  const moveModule = (fromIndex, toIndex) => {
+    setModules((prevModules) => {
+      const result = [...prevModules];
+      const [removed] = result.splice(fromIndex, 1);
+      result.splice(toIndex, 0, removed);
+      return result;
+    });
+  };
+
+  const saveModules = () => {
+    try {
+      const layoutData = {
+        modules,
+        lastSaved: new Date().toISOString(),
+      };
+      localStorage.setItem(
+        "website-builder-layout",
+        JSON.stringify(layoutData)
+      );
+      alert("Layout saved successfully!");
+    } catch (error) {
+      console.error("Failed to save layout:", error);
+      alert("Failed to save layout. Please try again.");
+    }
+  };
+
+  const values = {
+    addModule,
+    removeModule,
+    updateModule,
+    moveModule,
+    saveModules,
+    modules,
+    setModules,
+    currentModuleId,
+    setCurrentModuleId,
+    courseId: course.id
+  };
+  return (
+    <moduleBuilderContext.Provider value={values}>
+      {children}
+    </moduleBuilderContext.Provider>
+  );
+}
+
+export const useModuleBuilder = () => {
+  const context = useContext(moduleBuilderContext);
+  if (context === undefined) {
+    throw new Error("useBuilder must be used within a BuilderProvider");
+  }
+  return context;
+};
+
+export default ModuleBuilderProvider;

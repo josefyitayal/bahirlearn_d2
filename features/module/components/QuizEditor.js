@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { v4 as uuidv4 } from "uuid";
+import cuid from "cuid";
 
 export default function QuizEditor({ value, onChange }) {
   const { prompt, questions } = value;
@@ -29,10 +29,10 @@ export default function QuizEditor({ value, onChange }) {
 
   const addQuestion = () => {
     const newQuestion = {
-      id: uuidv4(),
+      id: cuid(),
       text: "",
       options: [
-        { id: uuidv4(), text: "" }
+        { id: cuid(), text: "" }
       ]
     };
     const updatedQuestions = [...questions, newQuestion];
@@ -60,7 +60,7 @@ export default function QuizEditor({ value, onChange }) {
         q.id === id
           ? {
             ...q,
-            options: [...q.options, { id: uuidv4(), text: "" }],
+            options: [...q.options, { id: cuid(), text: "" }],
           }
           : q
       ),

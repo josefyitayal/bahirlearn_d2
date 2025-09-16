@@ -9,16 +9,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 export function ModuleEditor() {
   const {
     updateModule,
+    updateContent,
     modules,
     currentModuleId,
+    currentModuleContentId
   } = useModuleBuilder();
 
-  const module = modules.find(m => m.id === currentModuleId)
-  if (!module) return null
+  const content = modules
+    .flatMap(module => module.contents) // merge all contents into one array
+    .find(c => c.id === currentModuleContentId);
+
+  console.log(modules)
+  console.log(content);
+
+  function handleUpdatingLesson(newLessonData) {
+    const lessonData = {
+      ...content,
+      lesson: {
+        ...content.lesson,
+        content: newLessonData
+      }
+    }
+    updateContent(currentModuleId, content.id, lessonData)
+  }
+
+  function handleUpdatingQuiz(newQuizData) {
+    const quizData = {
+      ...content,
+      quiz: {
+        ...content.quiz,
+        prompt: newQuizData.prompt,
+        questions: newQuizData.questions
+      }
+    }
+    updateContent(currentModuleId, content.id, quizData)
+  }
+
+  if (!content) return <div>Create Lesson or Quiz</div>
 
   return (
     <div>
-      {module.type === "lesson" && (
+      {content.content_type === "LESSON" && (
         <Tabs defaultValue="editing" className="w-full">
           <TabsList className="flex items-center">
             <p className="text-lg font-semibold">Lesson</p>
@@ -27,26 +58,18 @@ export function ModuleEditor() {
           </TabsList>
           <TabsContent value="editing">
             <RichTextEditor
-              value={module.lesson?.content || ""}
-              onChange={(newContent) =>
-                updateModule(currentModuleId, {
-                  lesson: { ...module.lesson, content: newContent }
-                })
-              } />
+              value={content.lesson?.content || ""}
+              onChange={(newLessonData) => handleUpdatingLesson(newLessonData)} />
           </TabsContent>
           <TabsContent value="priview">
-            <div className="prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: module.lesson?.content }}></div>
+            <div className="prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: content.lesson?.content }}></div>
           </TabsContent>
         </Tabs>
       )}
-      {module.type === "quiz" && (
+      {content.content_type === "QUIZ" && (
         <QuizEditor
-          value={module.quiz || { prompt: "", questions: [] }}
-          onChange={(newQuizData) =>
-            updateModule(currentModuleId, {
-              quiz: { ...module.quiz, ...newQuizData }
-            })
-          } />
+          value={content.quiz || { prompt: "", questions: [] }}
+          onChange={(newQuizData) => handleUpdatingQuiz(newQuizData)} />
       )}
     </div>
   )

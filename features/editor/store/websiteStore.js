@@ -1,96 +1,73 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware';
 import sections from "@/sections.json"
 
-const useWebsiteBuilder = create(
-  persist(
-    (set, get) => ({
-      landingPageSections: [],
-      layerSection: {},
-      selectedSectionId: null,
-      subdomain: null,
+const useWebsiteBuilder = create((set, get) => ({
+  // ✅ always arrays/objects
+  landingPageSections: [],
+  layerSection: { header: [], footer: [] },
+  selectedSectionId: null,
+  subdomain: null,
 
-      // Add a section by id (no dupes, sets it as selected)
-      addSection: (id) => {
-        const { landingPageSections } = get()
-        if (landingPageSections.find((item) => item.id === id)) {
-          console.warn(`Section ${id} already added.`)
-          return
-        }
-        const foundSection = sections.find((s) => s.id === id)
-        if (!foundSection) {
-          throw new Error(`Section id ${id} not found in sections array.`)
-        }
-        set((state) => ({
-          landingPageSections: [...state.landingPageSections, foundSection],
-          selectedSectionId: id,
-        }))
+  addSection: (id) => {
+    const { landingPageSections } = get()
+    if (landingPageSections.find((item) => item.id === id)) return
+    const foundSection = sections.find((s) => s.id === id)
+    if (!foundSection) throw new Error(`Section id ${id} not found in sections array.`)
+    set((state) => ({
+      landingPageSections: [...state.landingPageSections, foundSection],
+      selectedSectionId: id,
+    }))
+  },
+
+  removeSection: (id) =>
+    set((state) => ({
+      landingPageSections: state.landingPageSections.filter((s) => s.id !== id),
+      selectedSectionId: state.selectedSectionId === id ? null : state.selectedSectionId,
+    })),
+
+  updateProperty: (id, data) =>
+    set((state) => ({
+      landingPageSections: state.landingPageSections.map((s) =>
+        s.id === id ? { ...s, ...data } : s
+      ),
+    })),
+
+  updateLayerSection: (sectionType, id, data) =>
+    set((state) => ({
+      layerSection: {
+        ...state.layerSection,
+        [sectionType]: (state.layerSection[sectionType] ?? []).map((section) =>
+          section.id === id ? { ...section, ...data } : section
+        ),
       },
+    })),
 
-      // Remove a section; if it was selected, clear selection
-      removeSection: (id) =>
-        set((state) => ({
-          landingPageSections: state.landingPageSections.filter((s) => s.id !== id),
-          selectedSectionId:
-            state.selectedSectionId === id ? null : state.selectedSectionId,
-        })),
-
-      // Update arbitrary props on a section
-      updateProperty: (id, data) =>
-        set((state) => ({
-          landingPageSections: state.landingPageSections.map((s) =>
-            s.id === id ? { ...s, ...data } : s
-          ),
-        })),
-
-      updateLayoutSection: (sectionType, id, data) =>
-        set((state) => ({
-          layoutSections: {
-            ...state.layoutSections,
-            [sectionType]: state.layoutSections[sectionType].map((section) =>
-              section.id === id ? { ...section, ...data } : section
-            ),
-          },
-        })),
-
-
-      // Reorder sections by index
-      moveSection: (fromIndex, toIndex) =>
-        set((state) => {
-          const arr = Array.from(state.landingPageSections)
-          const [moved] = arr.splice(fromIndex, 1)
-          arr.splice(toIndex, 0, moved)
-          return { landingPageSections: arr }
-        }),
-
-      // Replace the entire template array
-      setLandingPageSections: (newLandingPageSections) =>
-        set(() => ({ landingPageSections: newLandingPageSections })),
-
-      setLayerSection: (newLayerSection) =>
-        set(() => ({ layerSection: newLayerSection })),
-
-      // Just change selection
-      setSelectedSectionId: (id) =>
-        set(() => ({ selectedSectionId: id })),
-
-      // Clear everything
-      clearTemplate: () =>
-        set(() => ({
-          landingPageSections: [],
-          selectedSectionId: null,
-        })),
-
-      // assign subdomain
-      setSubdomain: (subdomain) =>
-        set(() => ({
-          subdomain: subdomain
-        }))
+  moveSection: (fromIndex, toIndex) =>
+    set((state) => {
+      const arr = state.landingPageSections.slice()
+      const [moved] = arr.splice(fromIndex, 1)
+      arr.splice(toIndex, 0, moved)
+      return { landingPageSections: arr }
     }),
-    {
-      name: "website-editor-storage",
-      getStorage: () => localStorage,
-    }
-  ))
+
+  // ✅ IMPORTANT: this expects an ARRAY (do not pass a function)
+  setLandingPageSections: (newLandingPageSections) =>
+    set(() => ({ landingPageSections: Array.isArray(newLandingPageSections) ? newLandingPageSections : [] })),
+
+  setLayerSection: (newLayerSection) =>
+    set(() => ({
+      layerSection: {
+        header: newLayerSection?.header ?? [],
+        footer: newLayerSection?.footer ?? [],
+      }
+    })),
+
+  setSelectedSectionId: (id) => set(() => ({ selectedSectionId: id })),
+
+  clearTemplate: () =>
+    set(() => ({ landingPageSections: [], selectedSectionId: null })),
+
+  setSubdomain: (subdomain) => set(() => ({ subdomain }))
+}))
 
 export default useWebsiteBuilder

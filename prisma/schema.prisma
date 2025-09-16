@@ -136,74 +136,105 @@ model Member {
   @@unique([phone_number, website_id])
 }
 
-model Course {
-  id           String    @id @default(cuid())
-  name        String
-  description  String?
-  thumbnail    String
-  slug String
-  price        Int
-  tag          String[]
-  status       COURSE_STATUS @default(DRAFT)
-
-  website      Website   @relation(fields: [website_id], references: [id])
-  website_id    String
-  transaction Transaction[]
-  module      Module[]
-  enrollment  CourseEnrollment[]
-
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-}
-
+// enums
 enum COURSE_STATUS {
   DRAFT
   PUBLISHED
 }
 
-enum ModuleType {
+enum ContentType {
   LESSON
   QUIZ
 }
 
+model Course {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  thumbnail    String
+  slug         String
+  price        Int
+  tag          String[]
+  status       COURSE_STATUS @default(DRAFT)
+
+  website      Website   @relation(fields: [website_id], references: [id])
+  website_id   String
+  transaction  Transaction[]
+  module       Module[]
+  enrollment   CourseEnrollment[]
+
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
 model Module {
-  id          String   @id @default(cuid())
+  id          String           @id @default(cuid())
   title       String
   description String?
-  type        ModuleType
-  position    Int
-
+  position    Int              // position of the module within the course (optional)
   course_id   String
-  course      Course   @relation(fields: [course_id], references: [id])
+  course      Course           @relation(fields: [course_id], references: [id], onDelete: Cascade)
 
-  lesson      Lesson?
-  quiz        Quiz?
+  // The ordered/mixed contents (lessons & quizzes)
+  contents    ModuleContent[]
 
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
+
+  @@index([course_id])
+  @@unique([course_id, position])
+}
+
+model ModuleContent {
+  id           String      @id @default(cuid())
+  module_id    String
+  module       Module      @relation(fields: [module_id], references: [id], onDelete: Cascade)
+
+  position     Int         // position of this content within the module (1,2,3,...)
+  content_type ContentType
+
+  // polymorphic link — one of lesson_id or quiz_id will be set depending on content_type
+  lesson       Lesson?     @relation(fields: [lesson_id], references: [id], onDelete: Cascade)
+  lesson_id    String?
+
+  quiz         Quiz?       @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  quiz_id      String?
+
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  @@unique([module_id, position])
+  @@index([module_id])
 }
 
 model Lesson {
   id         String   @id @default(cuid())
+  title      String?
   content    String   // markdown or richtext
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  module     Module   @relation(fields: [id], references: [id])
+  // reverse relation via ModuleContent
+  moduleContents ModuleContent[]
 }
 
 model Quiz {
   id         String   @id @default(cuid())
   prompt     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  questions QuizQuestion[]
-  module     Module   @relation(fields: [id], references: [id])
+  questions  QuizQuestion[]
+  // reverse relation via ModuleContent
+  moduleContents ModuleContent[]
 }
 
 model QuizQuestion {
-  id String @id @default(cuid())
-  text String
-  quiz_id   String
-  quiz     Quiz         @relation(fields: [quiz_id], references: [id])
-  options String[]  
+  id           String @id @default(cuid())
+  text         String
+  quiz_id      String
+  quiz         Quiz   @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  options      String[]  
   correct_index Int
 }
 

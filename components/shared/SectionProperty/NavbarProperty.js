@@ -5,10 +5,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import useWebsiteBuilder from "@/features/editor/store/websiteStore";
 
 export function NavbarProperty({ section }) {
-  const updateLayoutSection = useWebsiteBuilder((state) => state.updateLayoutSection)
+  const updateLayerSection = useWebsiteBuilder((state) => state.updateLayerSection)
 
   const handleChange = (field, value) => {
-    updateLayoutSection(section.type, section.id, {
+    updateLayerSection(section.type, section.id, {
       content: {
         ...section.content,
         [field]: value,
@@ -46,9 +46,9 @@ export function NavbarProperty({ section }) {
             <SelectValue placeholder="Link Alignment" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="start">Start</SelectItem>
+            <SelectItem value="left">Left</SelectItem>
             <SelectItem value="center">Center</SelectItem>
-            <SelectItem value="end">End</SelectItem>
+            <SelectItem value="right">Right</SelectItem>
           </SelectContent>
         </Select>
       </div>

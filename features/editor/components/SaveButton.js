@@ -9,13 +9,14 @@ import { toast } from 'sonner';
 export function SaveButton() {
   const [isLoading, setIsLoading] = useState(false)
   const landingPageSections = useWebsiteBuilder((state) => state.landingPageSections)
+  const layerSection = useWebsiteBuilder((state) => state.layerSection)
   const subdomain = useWebsiteBuilder((state) => state.subdomain)
 
   async function handleSave() {
     console.log(subdomain)
     if (landingPageSections && landingPageSections.length > 0 && subdomain) {
       setIsLoading(true)
-      const {errors, data} = await saveLandingPageSection(landingPageSections, subdomain)  
+      const {errors, data} = await saveLandingPageSection(landingPageSections, layerSection, subdomain)  
       if (errors) {
         toast.error(errors.message)
       } 

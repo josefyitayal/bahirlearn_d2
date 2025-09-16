@@ -16,7 +16,6 @@ async function EachCoursePage({params}) {
   if (errors) {
     return (<div>{errors.message}</div>)
   }
-  console.log(course)
   return (
     <ModuleBuilderProvider course={course[0]}>
       <div>

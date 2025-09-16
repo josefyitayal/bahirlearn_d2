@@ -14,8 +14,8 @@ export default async function WebsiteEditorLayout({ children }) {
   }
 
   const section = data.section || []
-  console.log(data.layer_section, data.section, "88888888888888888888")
   const layerSection = data.layer_section
+
   return (
     <EditorProvider initialSections={section} layerSection={layerSection} subdomain={data.subdomain}>
       <div className="flex flex-col h-screen min-h-screen bg-gray-50">

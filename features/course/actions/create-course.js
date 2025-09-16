@@ -36,7 +36,6 @@ export const createCourse = async (name, description, price, thumbnail) => {
           data: null
         }
       }
-      console.log(dbUser)
       const dbCourse = await client.course.create({
         data: {
           name: validatedFields.data.name,

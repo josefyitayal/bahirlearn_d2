@@ -35,14 +35,16 @@ export function CourseForm({ course, close, setRefreshKey }) {
     const {name, description, price, thumbnail} = values;
     
     if (course?.id) {
-      console.log("course is editing")
+      // Editing Course
+
       const {errors: updateErrors} = await updateCourse(course.id, {name, description,price, thumbnail})
       if (updateErrors) {
         toast(errors.message)
       }
       setRefreshKey((prev) => prev + 1 )
     }else {
-      console.log("course is creating")
+      // Create Course
+
       const {errors: createErrors, data: createData} = await createCourse(name, description, price, thumbnail)
       if (createErrors) {
         toast(createErrors.message)

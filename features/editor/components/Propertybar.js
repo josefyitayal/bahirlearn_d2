@@ -5,9 +5,16 @@ import useWebsiteBuilder from "../store/websiteStore"
 
 export function Propertybar() {
   const landingPageSections = useWebsiteBuilder((state) => state.landingPageSections)
+  const layerSection = useWebsiteBuilder((state) => state.layerSection)
   const selectedSectionId = useWebsiteBuilder((state) => state.selectedSectionId)
 
-  const selectedSection = landingPageSections.find((s) => s.id === selectedSectionId)
+  const combinedSections = [
+    ...(layerSection.header || []),
+    ...landingPageSections,
+    ...(layerSection.footer || [])
+  ];
+
+  const selectedSection = combinedSections.find((s) => s.id === selectedSectionId)
 
   return (
     <div className="w-[300px] h-full bg-white border-l border-gray-200 flex flex-col">

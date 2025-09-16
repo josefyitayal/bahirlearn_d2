@@ -7,10 +7,10 @@ import { Switch } from "@/components/ui/switch";
 
 
 export function FooterProperty({ section }) {
-  const updateLayoutSection = useWebsiteBuilder((state) => state.updateLayoutSection)
+  const updateLayerSection = useWebsiteBuilder((state) => state.updateLayerSection)
 
   const handleChange = (field, value) => {
-    updateLayoutSection(section.type, section.id, {
+    updateLayerSection(section.type, section.id, {
       content: {
         ...section.content,
         [field]: value,
